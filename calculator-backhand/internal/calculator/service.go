@@ -35,34 +35,68 @@ func evaluate(expression string) (float64, error) {
         return 0, errors.New("invalid expression format")
     }
 
+    // 先处理乘除，生成一个新的中间token数组
+    var stack []string
     result, err := strconv.ParseFloat(tokens[0], 64)
     if err != nil {
         return 0, err
     }
+    stack = append(stack, strconv.FormatFloat(result, 'f', -1, 64))
 
-    for i := 1; i < len(tokens); i += 2 {
+    i := 1
+    for i < len(tokens) {
         op := tokens[i]
-        nextVal, err := strconv.ParseFloat(tokens[i+1], 64)
+        num, err := strconv.ParseFloat(tokens[i+1], 64)
+        if err != nil {
+            return 0, err
+        }
+
+        switch op {
+        case "*":
+            prev, _ := strconv.ParseFloat(stack[len(stack)-1], 64)
+            prev = prev * num
+            stack[len(stack)-1] = strconv.FormatFloat(prev, 'f', -1, 64)
+        case "/":
+            if num == 0 {
+                return 0, errors.New("division by zero")
+            }
+            prev, _ := strconv.ParseFloat(stack[len(stack)-1], 64)
+            prev = prev / num
+            stack[len(stack)-1] = strconv.FormatFloat(prev, 'f', -1, 64)
+        case "+", "-":
+            stack = append(stack, op)
+            stack = append(stack, strconv.FormatFloat(num, 'f', -1, 64))
+        default:
+            return 0, errors.New("unsupported operator: " + op)
+        }
+
+        i += 2
+    }
+
+    // 再处理加减
+    finalResult, err := strconv.ParseFloat(stack[0], 64)
+    if err != nil {
+        return 0, err
+    }
+    i = 1
+    for i < len(stack) {
+        op := stack[i]
+        num, err := strconv.ParseFloat(stack[i+1], 64)
         if err != nil {
             return 0, err
         }
 
         switch op {
         case "+":
-            result += nextVal
+            finalResult += num
         case "-":
-            result -= nextVal
-        case "*":
-            result *= nextVal
-        case "/":
-            if nextVal == 0 {
-                return 0, errors.New("division by zero")
-            }
-            result /= nextVal
+            finalResult -= num
         default:
-            return 0, errors.New("unsupported operator: " + op)
+            return 0, errors.New("unsupported operator in final evaluation: " + op)
         }
+
+        i += 2
     }
 
-    return result, nil
+    return finalResult, nil
 }
