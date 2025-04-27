@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@connectrpc/connect-web": "^2.0.2",
     "calculator-frontend": "file:",
     "next": "15.3.1",
     "react": "^19.0.0",
