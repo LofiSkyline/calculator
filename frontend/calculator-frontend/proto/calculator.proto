@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package calculator;
+
+option go_package = "github.com/LofiSkyline/calculator/gen;calculator";
+
+// 计算器服务，接收一个表达式
+service CalculatorService {
+  rpc ComputeExpression (ExpressionRequest) returns (ExpressionResponse);
+}
+
+// 请求：表达式
+message ExpressionRequest {
+  string expression = 1;
+}
+
+// 响应：结果
+message ExpressionResponse {
+  double result = 1;
+}
