@@ -1,8 +1,10 @@
 version: v1
+managed:
+  enabled: false
 plugins:
   - name: es
     out: src/gen
-    opt: target=ts
+    opt: target=ts,import_extension=.ts
   - name: connect-es
     out: src/gen
-    opt: target=ts
+    opt: target=ts,import_extension=.ts
