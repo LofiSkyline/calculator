@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { computeExpression } from "../src/service/calculator";
+import { ConnectError } from "@connectrpc/connect";
 
 export default function Home() {
   const [expression, setExpression] = useState("");
@@ -11,14 +12,19 @@ export default function Home() {
       alert("请输入要计算的表达式！");
       return;
     }
-
+  
     try {
       setLoading(true);
       const res = await computeExpression(expression);
       setResult(res);
-    } catch (error) {
-      console.error("计算出错:", error);
-      alert("计算失败，请检查服务器连接！");
+    } catch (err) {
+      const error = err as any;  // 👈 解决 unknown 问题
+  
+      if (error instanceof ConnectError) {
+        alert(`计算失败: ${error.rawMessage}`);
+      } else {
+        alert("发生未知错误，请检查服务器连接！");
+      }
     } finally {
       setLoading(false);
     }
