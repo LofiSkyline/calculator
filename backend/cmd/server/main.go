@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-    // 实例化你的服务
+    // 实例化服务
     calculatorServer := &calculator.CalculatorServer{}
 
     // 创建 mux
@@ -20,7 +20,7 @@ func main() {
     path, handler := calculatorconnect.NewCalculatorServiceHandler(calculatorServer)
     mux.Handle(path, handler)
 
-    // 🌟 包一层 CORS + Connect 检查
+    // CORS + Connect 检查
     corsMux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         w.Header().Set("Access-Control-Allow-Origin", "*")
         w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
@@ -31,7 +31,7 @@ func main() {
             return
         }
 
-        // 强制检查 Content-Type 和 Connect-Protocol-Version
+        // 强制检查 Content-Type 和 Connect-Protocol-Version 使用ConnectRPC协议通信
         contentType := r.Header.Get("Content-Type")
         connectVersion := r.Header.Get("Connect-Protocol-Version")
 
