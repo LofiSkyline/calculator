@@ -32,7 +32,7 @@ func (s *CalculatorServer) ComputeExpression(
     }), nil
 }
 
-// evaluate 简单解析表达式，支持 + - * /，不支持括号优先级
+// evaluate 简单解析表达式，支持 + - * /
 func evaluate(expression string) (float64, error) {
     tokens := strings.Fields(expression)
     if len(tokens)%2 == 0 {

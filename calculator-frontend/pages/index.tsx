@@ -18,7 +18,7 @@ export default function Home() {
       const res = await computeExpression(expression);
       setResult(res);
     } catch (err) {
-      const error = err as any;  // 👈 解决 unknown 问题
+      const error = err as any;  //  解决 unknown 问题
   
       if (error instanceof ConnectError) {
         alert(`计算失败: ${error.rawMessage}`);

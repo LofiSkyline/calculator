@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import IndexPage from "../index"; // 相对路径，指向你的 index.tsx
-import { computeExpression } from "@/service/calculator";// 引用你的 computeExpression 方法
-import { ConnectError, Code } from "@connectrpc/connect"; // 引入 ConnectError 以便模拟错误
+import IndexPage from "../index"; 
+import { computeExpression } from "@/service/calculator";
+import { ConnectError, Code } from "@connectrpc/connect"; 
 
 jest.mock("@/service/calculator"); // 直接mock整个 computeExpression模块
 
@@ -27,7 +27,7 @@ describe("Calculator Page", () => {
     render(<IndexPage />);
   
     const input = screen.getByPlaceholderText(/请输入表达式/i);
-    const calculateButton = screen.getByText("计算"); // 注意是 "计算" 不是 "+" 号按钮
+    const calculateButton = screen.getByText("计算"); 
   
     fireEvent.change(input, { target: { value: "1 + 2" } });
     fireEvent.click(calculateButton);
