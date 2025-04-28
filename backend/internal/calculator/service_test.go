@@ -15,20 +15,24 @@ import (
 func TestComputeExpression(t *testing.T) {
     server := &CalculatorServer{}
 
-    tests := []struct {
-        name       string
-        expression string
-        wantResult float64
-        wantErr    bool
-    }{
-        {"Addition", "1 + 2", 3, false},
-        {"Subtraction", "5 - 3", 2, false},
-        {"Multiplication", "4 * 3", 12, false},
-        {"Division", "10 / 2", 5, false},
-        {"DivisionByZero", "10 / 0", 0, true},
-        {"InvalidExpression", "abc + 1", 0, true},
-        {"IncompleteExpression", "1 +", 0, true},
-    }
+	tests := []struct {
+		name       string
+		expression string
+		wantResult float64
+		wantErr    bool
+	}{
+		{"Addition", "1 + 2", 3, false},
+		{"Subtraction", "5 - 3", 2, false},
+		{"Multiplication", "4 * 3", 12, false},
+		{"Division", "10 / 2", 5, false},
+	
+		// 异常测试
+		{"EvenTokens", "1 +", 0, true},
+		{"InvalidNumber", "1 + abc", 0, true},
+		{"InvalidOperator", "1 ^ 2", 0, true},
+		{"DivisionByZero", "5 / 0", 0, true},
+	}
+	
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
